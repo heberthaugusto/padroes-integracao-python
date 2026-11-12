@@ -14,7 +14,7 @@
 
 Integrar dois sistemas é fácil no dia em que tudo funciona. O difícil é o resto: o ERP desligado à noite, dois webhooks do mesmo pedido chegando juntos, a plataforma mudando um status por conta própria, a promoção que precisa entrar às 8h e sair às 18h, o pedido que mistura produto e curso. Cada módulo aqui resolve um desses problemas de forma isolada e testável.
 
-A arquitetura completa em que esses padrões foram aplicados está descrita no [estudo de caso da integração e-commerce x ERP](https://github.com/heberthaugusto/estudo-caso-integracao-ecommerce-erp).
+A arquitetura completa em que esses padrões foram aplicados está descrita no [estudo de caso da integração e-commerce x ERP](https://github.com/heberthaugusto/integracao-ecommerce-erp-estudo-de-caso).
 
 ## 📦 Os padrões
 
