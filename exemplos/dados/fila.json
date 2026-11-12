@@ -1,0 +1,14 @@
+[
+  {
+    "acao": "criado",
+    "chave": 42,
+    "tentativas": 0,
+    "enfileirado_em": "2026-10-30T17:11:54"
+  },
+  {
+    "acao": "pago",
+    "chave": 42,
+    "tentativas": 0,
+    "enfileirado_em": "2026-10-30T17:11:54"
+  }
+]
