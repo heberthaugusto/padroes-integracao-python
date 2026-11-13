@@ -7,22 +7,22 @@ Um cliente compra, no mesmo pedido, um produto físico e um serviço (um
 curso presencial, por exemplo). No ERP os dois saem por fluxos fiscais
 diferentes: o produto gera nota de produto e passa por expedição e
 rastreio; o serviço gera nota de serviço e não tem envio. Importar o
-pedido inteiro num fluxo só obriga alguém a cancelar e refazer à mão.
+pedido inteiro num único fluxo exige cancelamento e relançamento manual.
 
 A solução divide o pedido em dois antes de importar, com três cuidados:
 
-1. **Duas fontes têm que concordar** sobre o que é serviço: a plataforma
+1. **Duas fontes precisam concordar** sobre o que é serviço: a plataforma
    (que separa os itens em partes "com envio" e "sem envio") e o ERP (tipo
    do produto no cadastro). Se discordarem, não divide.
-2. **O dinheiro tem que fechar ao centavo.** O desconto é rateado
+2. **Os valores precisam fechar ao centavo.** O desconto é rateado
    proporcionalmente ao valor dos itens de cada lado, a diferença de
    arredondamento fica no pedido de produtos, o frete vai inteiro para
    os produtos, e a soma dos dois pedidos é conferida contra o total pago.
-3. **Na dúvida, não divide.** Qualquer conferência que falhe devolve
+3. **Em caso de divergência, não divide.** Qualquer conferência que falhe devolve
    ``NaoDividir`` com o motivo, e o pedido segue o caminho antigo
    (tratamento manual), sem risco de criar pedidos com valores errados.
 
-Tudo em ``Decimal`` com arredondamento explícito. Nada de float em dinheiro.
+Tudo em ``Decimal`` com arredondamento explícito. Valores monetários nunca em float.
 """
 
 from dataclasses import dataclass

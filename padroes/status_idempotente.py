@@ -4,7 +4,7 @@ Atualização de status idempotente ("já está assim" é sucesso, não erro).
 A lição
 -------
 Uma integração avança o status de um pedido na plataforma (embalado,
-despachado, entregue) conforme o ERP evolui. Só que a plataforma também
+despachado, entregue) conforme o ERP evolui. A plataforma, porém, também
 muda status por conta própria: a transportadora marca "entregue", a
 equipe ajusta algo à mão. Quando a integração chega depois e pede para
 colocar um status que já está lá (ou já foi ultrapassado), a API recusa
@@ -17,7 +17,7 @@ apareceu como dois pedidos com cerca de 3.000 tentativas cada.
 
 A correção é classificar a resposta: o objetivo era "o pedido estar no
 status X"; se ele já está, o objetivo foi alcançado, só que por outro
-caminho. Devolve sucesso, registra um aviso e o pedido sai do radar.
+caminho. Devolve sucesso, registra um aviso e o pedido deixa de ser reprocessado.
 
 ``classificar_resposta`` é pura e testável; ``avancar_status`` mostra o
 uso com um cliente HTTP injetado (qualquer objeto com ``patch(url, json)``
@@ -57,7 +57,7 @@ def avancar_status(cliente_http, url, status, extras=None, logger=None):
         log.info("status atualizado para %s em %s", status, url)
         return True
     if resultado == JA_ESTAVA:
-        log.warning("recurso já estava em %s (ou além) em %s; tratando como sucesso para não retentar para sempre", status, url)
+        log.warning("recurso já estava em %s (ou além) em %s; tratando como sucesso para evitar retentativas indefinidas", status, url)
         return True
     log.error("erro ao atualizar status em %s: %s - %s", url, resposta.status_code, (resposta.text or "")[:200])
     return False

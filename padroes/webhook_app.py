@@ -1,8 +1,8 @@
 """
 Receptor de webhooks em Flask: assinatura, resposta rápida, processamento em segundo plano.
 
-Três regras para um webhook que não dá dor de cabeça
-----------------------------------------------------
+Três regras para um receptor de webhooks confiável
+--------------------------------------------------
 1. **Verifique a assinatura.** Plataformas de e-commerce assinam o corpo
    da requisição com HMAC-SHA256 usando o segredo do aplicativo e mandam
    o resultado num cabeçalho. Sem a verificação, qualquer pessoa que
@@ -10,14 +10,14 @@ Três regras para um webhook que não dá dor de cabeça
    ``hmac.compare_digest`` para não vazar informação pelo tempo de resposta.
 
 2. **Responda 200 em milissegundos.** A plataforma espera a resposta por
-   poucos segundos; se demorar, reenvia o evento, e aí o mesmo pedido
+   poucos segundos; se demorar, reenvia o evento, e o mesmo pedido
    chega duas vezes. Então o endpoint só valida, registra e devolve 200.
-   O trabalho pesado (falar com o ERP) roda numa thread.
+   O processamento (a comunicação com o ERP) roda numa thread.
 
-3. **Falhou, enfileira.** Se o processamento em segundo plano falhar
+3. **Em caso de falha, enfileire.** Se o processamento em segundo plano falhar
    (ERP fora do ar, por exemplo), o evento vai para a fila de
    retentativas em vez de se perder. Combinado com o lock por pedido
-   (``estado_json``), eventos duplicados viram no-ops.
+   (``estado_json``), eventos duplicados não produzem efeito.
 
 ``criar_app`` recebe as dependências por parâmetro, o que permite testar
 o receptor com o cliente de testes do Flask, sem rede e sem ERP.

@@ -6,15 +6,15 @@ Problema que resolve
 O ERP de uma loja física costuma ficar desligado fora do horário
 comercial. Um pedido feito no site às 23h chega por webhook, a
 integração tenta falar com o ERP e recebe "connection refused". Isso não
-é um erro de verdade, é o servidor dormindo. A ação precisa ser guardada
+é uma falha real, é o servidor desligado. A ação precisa ser guardada
 e repetida quando o sistema voltar, sem prazo de desistência e sem
 duplicar.
 
 Componentes
 -----------
 ``JanelaFuncionamento``
-    Sabe em que horários o sistema externo está no ar. Fora da janela a
-    fila nem tenta, o que evita encher o log de erros de conexão à noite
+    Define em que horários o sistema externo está disponível. Fora da janela a
+    fila não tenta, o que evita registrar erros de conexão à noite
     e no fim de semana.
 
 ``FilaRetentativas``
@@ -22,7 +22,7 @@ Componentes
     aceita a mesma ação duas vezes para a mesma chave. Cada passada de
     reprocessamento chama a função registrada para a ação; sucesso tira
     da fila, falha só incrementa o contador de tentativas (o contador é o
-    que denuncia um item preso, que precisa de intervenção humana).
+    que indica um item preso, que precisa de intervenção humana).
 
 Uma função de ação devolve True quando concluiu, False quando deve ser
 tentada de novo, ou levanta exceção (tratada como "tentar de novo").
@@ -152,5 +152,5 @@ class FilaRetentativas:
             parar.wait(intervalo_segundos)
 
     def presos(self, minimo_tentativas):
-        """Itens com tentativas demais, candidatos a alerta para um humano."""
+        """Itens com excesso de tentativas, candidatos a alerta para a equipe."""
         return [i for i in self.itens() if i["tentativas"] >= minimo_tentativas]

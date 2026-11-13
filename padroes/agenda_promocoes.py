@@ -4,12 +4,12 @@ Agenda de promoções (ativar e retirar preço promocional no horário certo).
 Problema que resolve
 --------------------
 No ERP a promoção tem data e hora de início e de fim. A plataforma de
-e-commerce só tem um campo "preço promocional", sem agendamento. Alguém
-precisa colocar o preço na hora de começar e tirar na hora de acabar.
+e-commerce só tem um campo "preço promocional", sem agendamento. É preciso
+aplicar o preço no início da promoção e retirá-lo no fim.
 
 Desenho
 -------
-Duas frequências separadas, para não pesar na fonte de dados:
+Duas frequências separadas, para não sobrecarregar a fonte de dados:
 
 * a **agenda** é relida da fonte (banco do ERP) a cada alguns minutos e
   salva em arquivo. Se a fonte cair, a última agenda salva continua
@@ -139,7 +139,7 @@ def decidir(agenda, aplicadas, agora, fonte_ok=True):
 
 class AgendaComCache:
     """Relê a agenda da fonte no máximo a cada ``intervalo_segundos`` e
-    guarda a última leitura boa em arquivo. ``ler_fonte`` é uma função sem
+    guarda a última leitura válida em arquivo. ``ler_fonte`` é uma função sem
     argumentos que devolve {sku: Promocao} ou levanta exceção."""
 
     def __init__(self, caminho, ler_fonte, intervalo_segundos=300, relogio=time.time):

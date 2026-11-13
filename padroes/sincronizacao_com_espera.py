@@ -12,7 +12,7 @@ A solução é tratar todo AUMENTO de estoque como possível recebimento:
 em vez de enviar na hora, a chave entra numa fila com o horário em que a
 mudança foi detectada e só é enviada quando a espera (por exemplo 1h30)
 termina. Diminuições de estoque (vendas) continuam indo na hora, porque
-aí o risco é o contrário, vender o que não tem.
+nesse caso o risco é o oposto, vender o que não há em estoque.
 
 ``SincronizacaoComEspera`` guarda as chaves pendentes em JSON, para a
 espera sobreviver a uma reinicialização do serviço. Uma rotina periódica
